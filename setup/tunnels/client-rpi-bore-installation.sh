@@ -5,4 +5,4 @@ wget $BORE_URL
 # untar archive
 tar -xvf $(basename $BORE_URL)
 # move the bin to /usr/local/bin
-mv ./bore /usr/local/bin/bore
+sudo mv ./bore /usr/local/bin/bore
