@@ -11,6 +11,6 @@ curl -s https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/s
 Run this command in the client (RPi) to install bore
 
 ```bash
-curl -s https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/tunnels/server-bore-installation.sh | bash
+curl -s https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/tunnels/client-rpi-bore-installation.sh | bash
 ```
 
