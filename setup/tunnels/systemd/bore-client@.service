@@ -1,0 +1,14 @@
+[Unit]
+Description=Bore service running on the client (port  %i)
+
+[Service]
+Type=forking
+Environment=BORE_LOCAL_PORT=%i
+Environment=BORE_REMOTE_PORT=%i
+Restart=on-failure
+LoadCredential=bore-secret:/etc/systemd/system/bore.pass
+ExecStart=/bin/sh -c 'bore local ${BORE_LOCAL_PORT} --to swag-code.com --port ${BORE_REMOTE_PORT} --secret $(cat "$CREDENTIALS_DIRECTORY/bore-secret") &'
+
+[Install]
+WantedBy=network-online.target
+WantedBy=multi-user.target
