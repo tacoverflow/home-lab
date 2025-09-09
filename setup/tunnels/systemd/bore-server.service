@@ -1,0 +1,27 @@
+[Unit]
+Description=Bore service running on the server
+
+[Service]
+Type=forking
+Environment=BORE_SECRET=<BORE_SECRET>
+PIDFile=/var/run/ssh-tunnel/ssh-tunnel.pid
+ExecStartPre=/bin/mkdir -p /var/run/ssh-tunnel
+ExecStartPre=-/bin/chown username:username /var/run/sbrl-ssh-tunnel
+ExecStart=/bin/sh -c 'until ping -c1 swag-code.com &>/dev/null && sleep 5; do :; done && bore server --secret $BORE_SECRET'
+
+[Install]
+WantedBy=network-online.target
+
+
+[Unit]
+Description=My Custom Service
+After=network.target # Optional: specify dependencies
+
+[Service]
+ExecStart=/path/to/your/script.sh # Or the command to execute
+Type=simple # Or other types like forking, oneshot
+Restart=on-failure # Optional: restart policy
+User=your_user # Optional: specify the user to run the service as
+
+[Install]
+WantedBy=multi-user.target # Specifies the target to enable the service for
