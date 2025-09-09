@@ -8,3 +8,4 @@ wget $BORE_URL
 tar -xvf $(basename $BORE_URL)
 # move the bin to /usr/local/bin
 mv ./bore /usr/local/bin/bore
+rm $(basename $BORE_URL)
