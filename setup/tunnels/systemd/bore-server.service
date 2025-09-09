@@ -6,7 +6,7 @@ Type=forking
 User=bore
 Restart=on-failure
 LoadCredential=bore-secret:/etc/systemd/system/bore.pass
-ExecStart=/bin/sh -c 'until ping -c1 swag-code.com &>/dev/null && sleep 5; do :; done && bore server --secret $(cat "$CREDENTIALS_DIRECTORY/bore-secret")'
+ExecStart=/bin/sh -c 'bore server --secret $(cat "$CREDENTIALS_DIRECTORY/bore-secret") &'
 
 [Install]
 WantedBy=network-online.target
