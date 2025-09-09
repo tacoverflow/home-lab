@@ -3,7 +3,6 @@ Description=Bore service running on the server
 
 [Service]
 Type=forking
-User=bore
 Restart=on-failure
 LoadCredential=bore-secret:/etc/systemd/system/bore.pass
 ExecStart=/bin/sh -c 'bore server --secret $(cat "$CREDENTIALS_DIRECTORY/bore-secret") &'
