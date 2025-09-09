@@ -6,3 +6,5 @@ wget $BORE_URL
 tar -xvf $(basename $BORE_URL)
 # move the bin to /usr/local/bin
 sudo mv ./bore /usr/local/bin/bore
+# delete old tar archive
+rm $(basename $BORE_URL)
