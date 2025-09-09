@@ -7,20 +7,24 @@
 curl -s https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/tunnels/server-bore-installation.sh | bash
 ```
 
-2. Create a secret to only allow connections from your clients
+2. Create a user for bore
+
+```
+adduser --system --no-create-home --group bore
+```
+
+3. Create a secret to only allow connections from your clients
 
 ```bash
-echo "put_your_secret_here" > /tmp/bore.pass
-chmod 600 /etc/bore.pass
-chown root:root /etc/bore.pass
+echo "put_your_secret_here" > /etc/systemd/system/bore.pass
+chmod 600 /etc/systemd/system/bore.pass
+chown bore:root /etc/systemd/system/bore.pass
 ```
 
 3. Create the systemd service definition and start the new service
 
 ```bash
-echo "put_your_secret_here" > /tmp/bore.pass
-chmod 600 /etc/bore.pass
-chown root:root /etc/bore.pass
+curl -o /etc/systemd/system/bore-server.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/tunnels/systemd/bore-server.service
 ```
 
 
