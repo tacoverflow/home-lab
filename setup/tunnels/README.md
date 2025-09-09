@@ -34,9 +34,9 @@ curl -s https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/s
 2. Create a secret to only allow connections from your clients
 
 ```bash
-echo "put_your_secret_here" > /etc/systemd/system/bore.pass
-chmod 600 /etc/systemd/system/bore.pass
-chown root:root /etc/systemd/system/bore.pass
+sudo echo "put_your_secret_here" > /etc/systemd/system/bore.pass
+sudo chmod 600 /etc/systemd/system/bore.pass
+sudo chown root:root /etc/systemd/system/bore.pass
 ```
 
 3. Create the systemd service definition and start the new services, add the ports to the list as needed
@@ -45,8 +45,8 @@ chown root:root /etc/systemd/system/bore.pass
 curl -o /etc/systemd/system/bore-client@.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/tunnels/systemd/bore-client%40.service
 EXPOSE_PORTS="8888"
 for port in EXPOSE_PORTS; do
-    systemctl enable bore-server@${port}.service
-    systemctl start bore-server@${port}.service
+    sudo systemctl enable bore-server@${port}.service
+    sudo systemctl start bore-server@${port}.service
 done
 ```
 
