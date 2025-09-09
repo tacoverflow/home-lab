@@ -45,8 +45,8 @@ sudo chown root:root /etc/systemd/system/bore.pass
 sudo curl -o /etc/systemd/system/bore-client@.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/tunnels/systemd/bore-client%40.service
 EXPOSE_PORTS="test-webpage 8081 8888"
 echo "$EXPOSE_PORTS" | while read tunnel_name local_port remote_port; do
-    echo "BORE_LOCAL_PORT=$local_port" > /etc/systemd/system/bore-${tunnel_name}.conf
-    echo "BORE_REMOTE_PORT=$remote_port" >> /etc/systemd/system/bore-${tunnel_name}.conf
+    echo "BORE_LOCAL_PORT=$local_port" | sudo tee /etc/systemd/system/bore-${tunnel_name}.conf
+    echo "BORE_REMOTE_PORT=$remote_port" | sudo tee -a /etc/systemd/system/bore-${tunnel_name}.conf
     sudo systemctl enable bore-client@${tunnel_name}.service
     sudo systemctl start bore-client@${tunnel_name}.service
 ; done
