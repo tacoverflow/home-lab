@@ -3,6 +3,8 @@ Description=Bore service running on the client(%i)
 
 [Service]
 Type=forking
+Restart=always
+RuntimeMaxSec=1h
 EnvironmentFile=/etc/systemd/system/bore-%i.conf
 Restart=on-failure
 LoadCredential=bore-secret:/etc/systemd/system/bore.pass
@@ -10,4 +12,4 @@ ExecStart=/bin/sh -c 'bore local ${BORE_LOCAL_PORT} --to swag-code.com --port ${
 
 [Install]
 WantedBy=network-online.target
-WantedBy=multi-user.target
+# WantedBy=multi-user.target
