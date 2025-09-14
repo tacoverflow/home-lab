@@ -2,15 +2,15 @@
 
 ```bash
 sudo apt install -y syncthing
-# Find the config file path with this
-# sudo syncthing -paths
-# Configuration file:
-#         /root/.config/syncthing/config.xml
-sudo vi /root/.config/syncthing/config.xml
+# Enable and start the syncthing service, also check the status
+sudo systemctl enable syncthing@${USER}.service
+sudo systemctl start syncthing@${USER}.service
+sudo systemctl status syncthing@${USER}.service
+# Set the host ip to 0.0.0.0 in the syncthing config to allow access from externals ips
+vi ~/.config/syncthing/config.xml
 # <gui enabled="true" tls="false" debugging="false">
-#    <address>PUT_YOUR_IP_OR_DOMAIN_HERE:8384</address>
+#    <address>0.0.0.0:8384</address>
 # ...
-sudo systemctl enable syncthing@root.service
-sudo systemctl status syncthing@root.service
-#
+sudo systemctl restart syncthing@${USER}.service
+sudo systemctl status syncthing@${USER}.service
 ```
