@@ -43,7 +43,9 @@ sudo chown root:root /etc/systemd/system/bore.pass
 
 ```bash
 sudo curl -o /etc/systemd/system/bore-client@.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/tunnels/systemd/bore-client%40.service
-EXPOSE_PORTS="test-webpage 8081 8888"
+EXPOSE_PORTS="test-webpage 8081 8888
+test-webcam 56000 56000
+syncthing-tunnel 8384 8384"
 echo "$EXPOSE_PORTS" | while read tunnel_name local_port remote_port
 do
     echo "BORE_LOCAL_PORT=$local_port" | sudo tee /etc/systemd/system/bore-${tunnel_name}.conf
