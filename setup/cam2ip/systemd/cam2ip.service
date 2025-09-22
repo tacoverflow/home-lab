@@ -1,0 +1,13 @@
+[Unit]
+Description=Webcam stream using cam2ip
+
+[Service]
+Type=forking
+Restart=always
+RuntimeMaxSec=1h
+Restart=on-failure
+LoadCredential=cam2ip-secret:/etc/systemd/system/cam2ip.pass
+ExecStart=/bin/sh -c 'cam2ip --htpasswd-file ${CREDENTIALS_DIRECTORY}/cam2ip-secret &'
+
+[Install]
+WantedBy=network-online.target
