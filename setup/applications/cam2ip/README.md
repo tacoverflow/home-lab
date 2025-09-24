@@ -18,7 +18,7 @@ sudo htpasswd -c /etc/systemd/system/cam2ip.pass YOUR_USER
 3. Create the systemd service
 
 ```bash
-sudo curl -o /etc/systemd/system/cam2ip.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/cam2ip/systemd/cam2ip.service
+sudo curl -o /etc/systemd/system/cam2ip.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/applications/cam2ip/systemd/cam2ip.service
 sudo systemctl enable cam2ip.service
 sudo systemctl start cam2ip.service
 ```
