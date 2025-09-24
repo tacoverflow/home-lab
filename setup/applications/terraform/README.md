@@ -16,5 +16,10 @@ go version
 
 2. Install terraform
 ```bash
-go install github.com/hashicorp/terraform/terraform@latest
+curl -o /tmp/terraform_1.13.3_linux_arm.zip https://releases.hashicorp.com/terraform/1.13.3/terraform_1.13.3_linux_arm.zip
+unzip -d /tmp/terraform_1.13.3_linux_arm /tmp/terraform_1.13.3_linux_arm.zip 
+sudo mv /tmp/terraform_1.13.3_linux_arm/terraform /usr/local/bin/terraform
+terraform version
+# Terraform v1.13.3
+# on linux_arm
 ```
