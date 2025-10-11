@@ -1,5 +1,8 @@
 # disable the swap, required by kubelet
 sudo swapoff -a
+sudo systemctl stop systemd-zram-setup@zram0.service
+sudo systemctl mask systemd-zram-setup@zram0.service
+sudo swapoff /dev/zram0
 
 # Enable ipv4 forwarding
 # loading kernel modules
