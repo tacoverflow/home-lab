@@ -45,4 +45,7 @@ containerd config default | sudo tee /etc/containerd/config.toml
 sudo sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g"  /etc/containerd/config.toml
 # Start container runntime
 sudo systemctl enable containerd
-sudo systemctl start containerd
+sudo systemctl restart containerd
+
+# Start control-plane with kubeadm
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
