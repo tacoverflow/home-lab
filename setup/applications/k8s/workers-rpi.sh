@@ -31,7 +31,7 @@ sudo systemctl disable apparmor
 # Update repo list
 sudo apt update
 # install basic tools
-sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+sudo apt install -y apt-transport-https ca-certificates curl gpg
 # Create directory `/etc/apt/keyrings` if does not exist
 sudo mkdir -p -m 755 /etc/apt/keyrings
 # Add kubernetes keyring to gpg and add the repo to the source list
