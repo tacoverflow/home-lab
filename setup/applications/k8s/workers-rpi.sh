@@ -49,3 +49,8 @@ sudo sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g"  /etc/containerd/co
 # Start container runntime
 sudo systemctl enable containerd
 sudo systemctl restart containerd
+
+# Hotfix for wrong/missing cni path
+sudo ln -s /opt/cni/bin /usr/lib/cni
+sudo systemctl restart containerd.service
+sudo systemctl restart kubelet.service
