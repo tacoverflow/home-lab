@@ -55,3 +55,8 @@ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # Deploy Flannel CNI
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+# Hotfix for wrong/missing cni path
+sudo ln -s /opt/cni/bin /usr/lib/cni
+sudo systemctl restart containerd.service
+sudo systemctl restart kubelet.service
