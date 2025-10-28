@@ -1,11 +1,11 @@
 #! /bin/bash -xe
-# Place on /opt/iptables-aws-reroute-hack.sh
+# Place on /opt/iptables_aws_reroute_hack.sh
 
 #sudo iptables -X
 
 AWS_PROFILE=terraform
 ip_pairs=$(aws ec2 describe-instances \
-        --filters "Name=tag:k8s,Values=true" "Name=instance-state-name,Values=running" \
+        --filters "Name=tag:Name,Values=k8s-worker" "Name=instance-state-name,Values=running" \
         --query "Reservations[].Instances[][PrivateIpAddress,PublicIpAddress]" \
         --output text)
 
