@@ -3,7 +3,7 @@
 
 #sudo iptables -X
 
-AWS_PROFILE=terraform
+export AWS_PROFILE=terraform
 ip_pairs=$(aws ec2 describe-instances \
         --filters "Name=tag:Name,Values=k8s-worker" "Name=instance-state-name,Values=running" \
         --query "Reservations[].Instances[][PrivateIpAddress,PublicIpAddress]" \
