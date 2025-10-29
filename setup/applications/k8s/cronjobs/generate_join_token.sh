@@ -1,5 +1,11 @@
 #! /bin/bash -xe
-# Place on /opt/generate_join_token.sh
+# Add this to root contab
+# 0 0 * * * /bin/bash -x /opt/generate_join_token.sh >> /tmp/cron.out 2>&1
 
+# Place on /opt/generate_join_token.sh
+echo "start"
 join_command=$(kubeadm token create --print-join-command --ttl 48h)
-aws ssm put-parameter --name "k8s-join-command" --value "$join_command" --type String --overwrite
+echo "join: $join_command"
+output=$(/usr/local/bin/aws ssm put-parameter --name "k8s-join-command" --value "$join_command" --type String --overwrite)
+echo "output: $output"
+echo "end"
