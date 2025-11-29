@@ -1,2 +1,3 @@
 .env.secret*
-certs/
+registry.crt
+registry.key
