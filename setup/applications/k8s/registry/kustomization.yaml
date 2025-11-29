@@ -1,0 +1,15 @@
+secretGenerator:
+- name: registry-env-secret
+  envs:
+  - .env.secrets
+
+generators:
+  - registry-tls-secret.yaml
+
+resources:
+- pv.yaml
+- pvc.yaml
+- deployment.yaml
+- svc.yaml
+
+namespace: registry

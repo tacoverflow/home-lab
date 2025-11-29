@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry
+  namespace: registry
+  labels:
+    app: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - arm64
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists
+      containers:
+        - name: registry
+          image: registry:2
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - secretRef:
+                name: registry-env-secret
+          env:
+            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+              value: /var/lib/registry
+            - name: REGISTRY_HTTP_TLS_CERTIFICATE
+              value: "/certs/tls.crt"
+            - name: REGISTRY_HTTP_TLS_KEY
+              value: "/certs/tls.key"
+            - name: REGISTRY_STORAGE_DELETE_ENABLED
+              value: "true"
+          volumeMounts:
+            - name: registry-storage-volume
+              mountPath: /var/lib/registry
+            - name: registry-tls-volume
+              mountPath: /certs
+              readOnly: true
+      volumes:
+        - name: registry-storage-volume
+          persistentVolumeClaim:
+            claimName: registry-pvc
+        - name: registry-tls-volume
+          secret:
+            secretName: registry-tls-secret
