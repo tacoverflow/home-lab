@@ -1,3 +1,5 @@
 .env.secret*
 registry.crt
 registry.key
+kubernetes-dashboard.crt
+kubernetes-dashboard.key
