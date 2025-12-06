@@ -1,0 +1,6 @@
+resources:
+- gateway.yaml
+- httproute.yaml
+
+namespace: kubernetes-dashboard
+

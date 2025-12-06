@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dashboard-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: kubernetes-dashboard
+  name: dashboard-user
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps", "secrets", "deployments", "replicasets", "pods/log"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dashboard-user-role-binding
+  namespace: kubernetes-dashboard
+subjects:
+- kind: ServiceAccount
+  name: dashboard-user
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: dashboard-user-role
+  apiGroup: ""
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dashboard-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: dashboard-user
+  namespace: kubernetes-dashboard
+

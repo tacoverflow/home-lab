@@ -1,0 +1,8 @@
+generators:
+  - kubernetes-dashboard-tls-secret.yaml
+
+resources:
+- rbac.yaml
+
+namespace: kubernetes-dashboard
+
