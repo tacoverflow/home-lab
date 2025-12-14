@@ -1,0 +1,10 @@
+resources:
+- base.yaml
+- gateway-class.yaml
+
+patches:
+- path: deployment.yaml
+  target:
+    kind: Deployment
+
+namespace: envoy-gateway-system

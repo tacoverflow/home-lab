@@ -10,5 +10,5 @@ spec:
   persistentVolumeReclaimPolicy: Retain  # Retain the volume after the PVC is deleted
   storageClassName: local-storage  # must match PVC definition
   hostPath:
-    path: /mnt/k8s/registry
+    path: /var/lib/registry
     type: DirectoryOrCreate  # create dir if needed

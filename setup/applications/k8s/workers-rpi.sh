@@ -54,3 +54,6 @@ sudo systemctl restart containerd
 sudo ln -s /opt/cni/bin /usr/lib/cni
 sudo systemctl restart containerd.service
 sudo systemctl restart kubelet.service
+
+# Run join command
+# sudo kubeadm join 45.76.174.46:6443 --token 995fe2.zrko8abo8cvyvgvi --discovery-token-ca-cert-hash sha256:69e5f0da8383425cfd3e5c4f5c06172472edc858817e9bec13279024e84c28a0 --node-name worker-1
