@@ -1,0 +1,40 @@
+FROM public.ecr.aws/deep-learning-containers/pytorch-inference-arm64:2.6.0-gpu-py312-cu124-ubuntu22.04-ec2-v1.42 as base
+
+FROM debian:12-slim
+RUN apt update
+RUN apt install -y curl libgomp1
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH=/root/.local/bin/:$PATH
+ENV VIRTUAL_ENV=/opt/venv
+ENV CUDA_PATH=/opt/cuda/lib64
+ENV LD_LIBRARY_PATH="$CUDA_PATH"
+RUN uv python install 3.12 --default
+RUN uv venv $VIRTUAL_ENV
+RUN . $VIRTUAL_ENV/bin/activate && \
+    uv pip install awscli && \
+    python -m awscli s3 cp s3://persistent-data-ef4ba2/develop/python/libs/ctranslate2-arm64-cuda-v4.6.3.tar.gz /tmp/
+COPY --from=base /usr/lib/aarch64-linux-gnu/libcudnn.so.9.1.0 $CUDA_PATH/libcudnn.so.9
+COPY --from=base /usr/local/cuda-12.4/targets/sbsa-linux/lib/libcublas.so.12.4.5.8 $CUDA_PATH/libcublas.so.12
+COPY --from=base /usr/local/cuda-12.4/targets/sbsa-linux/lib/libcublasLt.so.12.4.5.8 $CUDA_PATH/libcublasLt.so.12
+WORKDIR /opt/app
+RUN curl -O https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/applications/faster-whisper-arm64-cuda/requirements.txt
+RUN curl -O https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/applications/faster-whisper-arm64-cuda/main.py
+RUN . $VIRTUAL_ENV/bin/activate && \
+    uv pip install -r requirements.txt && \
+    uv pip uninstall ctranslate2
+WORKDIR /tmp/
+RUN curl -O https://developer.download.nvidia.com/compute/cudnn/9.1.0/local_installers/cudnn-local-repo-ubuntu2204-9.1.0_1.0-1_arm64.deb && \
+    dpkg -i cudnn-local-repo-ubuntu2204-9.1.0_1.0-1_arm64.deb && \
+    rm cudnn-local-repo-ubuntu2204-9.1.0_1.0-1_arm64.deb && \
+    cp /var/cudnn-local-repo-ubuntu2204-9.1.0/cudnn-*-keyring.gpg /usr/share/keyrings/ && \
+    apt update && \
+    apt install -y libcudnn9-cuda-12 && \
+    rm -rf /var/cudnn-local-repo-ubuntu2204-9.1.0
+RUN tar -xvf ctranslate2-arm64-cuda-v4.6.3.tar.gz && \
+    rm ctranslate2-arm64-cuda-v4.6.3.tar.gz
+WORKDIR /tmp/ctranslate2-arm64-cuda
+RUN . $VIRTUAL_ENV/bin/activate && \
+    ./install.sh
+WORKDIR /opt/app
+RUN rm -rf /tmp/ctranslate2-arm64-cuda
+CMD . $VIRTUAL_ENV/bin/activate && uvicorn main:app --host 0.0.0.0 --port 8000
