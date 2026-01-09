@@ -39,7 +39,7 @@ model: Optional[WhisperModel] = None
 
 # Configuration
 class ModelConfig(BaseModel):
-    model_size: Literal["tiny", "base", "small", "medium", "large-v2", "large-v3"] = "base"
+    model_size: Literal["tiny", "base", "small", "medium", "large-v2", "large-v3", "distil-large-v3"] = "distil-large-v3"
     device: Literal["cpu", "cuda"] = "cuda"
     compute_type: Literal["int8", "int8_float16", "float16", "float32"] = "float16"
 
