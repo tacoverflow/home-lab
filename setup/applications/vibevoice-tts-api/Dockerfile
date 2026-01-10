@@ -13,3 +13,5 @@ WORKDIR /opt/VibeVoice
 RUN . /opt/venv/bin/activate && uv pip install -e .
 COPY /app /opt/app
 WORKDIR /opt/app
+ENV VOICE_PATH="/opt/VibeVoice/demo/voices/streaming_model"
+CMD . /opt/venv/bin/activate && uvicorn main:app --host 0.0.0.0 --port 8000
