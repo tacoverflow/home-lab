@@ -3,7 +3,7 @@ RUN apt update
 RUN apt install -y curl git
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN . $HOME/.local/bin/env && uv python install 3.12
-RUN uv venv /opt/venv/ --seed
+RUN . $HOME/.local/bin/env && uv venv /opt/venv/ --seed
 RUN . /opt/venv/bin/activate && uv pip install torch transformers==4.51.3 soundfile accelerate peft diffusers fastapi pydantic 
 RUN . /opt/venv/bin/activate && uv pip install flash-attn --no-build-isolation
 WORKDIR /opt/
