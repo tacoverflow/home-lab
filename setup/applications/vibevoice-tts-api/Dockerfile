@@ -5,7 +5,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
 RUN uv python install 3.12
 RUN uv venv /opt/venv/ --seed
-RUN . /opt/venv/bin/activate && uv pip install torch transformers==4.51.3 soundfile accelerate peft diffusers fastapi pydantic 
+RUN . /opt/venv/bin/activate && uv pip install torch transformers==4.51.3 soundfile accelerate peft diffusers fastapi pydantic uvicorn
 RUN . /opt/venv/bin/activate && uv pip install flash-attn --no-build-isolation
 WORKDIR /opt/
 RUN git clone https://github.com/microsoft/VibeVoice.git
