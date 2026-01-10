@@ -10,6 +10,6 @@ RUN . /opt/venv/bin/activate && uv pip install flash-attn --no-build-isolation
 WORKDIR /opt/
 RUN git clone https://github.com/microsoft/VibeVoice.git
 WORKDIR /opt/VibeVoice
-RUN pip install -e .
+RUN . /opt/venv/bin/activate && uv pip install -e .
 COPY /app /opt/app
 WORKDIR /opt/app
