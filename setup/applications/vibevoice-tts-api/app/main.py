@@ -29,7 +29,7 @@ async def load_model():
     global model, processor, all_prefilled_outputs
     
     model_id = "microsoft/VibeVoice-Realtime-0.5B"
-    voice_sample = "demo/voices/streaming_model/en-Emma_woman.pt"
+    voice_sample = "$VOICE_PATH/en-Emma_woman.pt"
     
     print("Loading VibeVoice model...")
     processor = VibeVoiceStreamingProcessor.from_pretrained(model_id)
