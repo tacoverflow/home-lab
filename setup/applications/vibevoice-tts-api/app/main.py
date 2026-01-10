@@ -18,6 +18,7 @@ app = FastAPI(title="VibeVoice TTS API")
 model = None
 processor = None
 all_prefilled_outputs = None
+voice_path = os.environ.get('VOICE_PATH', '/opt/VibeVoice/demo/voices/streaming_model')
 
 class TTSRequest(BaseModel):
     text: str
@@ -29,7 +30,7 @@ async def load_model():
     global model, processor, all_prefilled_outputs
     
     model_id = "microsoft/VibeVoice-Realtime-0.5B"
-    voice_sample = "$VOICE_PATH/en-Emma_woman.pt"
+    voice_sample = f"{voice_path}/en-Emma_woman.pt"
     
     print("Loading VibeVoice model...")
     processor = VibeVoiceStreamingProcessor.from_pretrained(model_id)
