@@ -6,3 +6,6 @@ ENV PATH="/root/.local/bin:$PATH"
 RUN uv python install 3.12
 RUN uv venv /opt/venv/ --seed
 RUN --mount=type=cache,target=/opt/venv . /opt/venv/bin/activate && uv pip install faster-whisper uvicorn python-multipart pydantic
+COPY ./app /opt/app
+WORKDIR /opt/app
+CMD . /opt/venv/bin/activate && uvicorn main:app --host 0.0.0.0 --port 8000
