@@ -8,6 +8,7 @@ import os
 import wave
 import numpy as np
 import soundfile as sf
+import traceback
 import logging
 
 # Configure logging
