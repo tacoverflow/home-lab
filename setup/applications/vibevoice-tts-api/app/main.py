@@ -20,6 +20,7 @@ model = None
 processor = None
 all_prefilled_outputs = None
 voice_path = os.environ.get('VOICE_PATH', '/opt/VibeVoice/demo/voices/streaming_model')
+model_path = os.environ.get('MODEL_PATH', '/opt/app/model/VibeVoice-Realtime-0.5B')
 
 class TTSRequest(BaseModel):
     text: str
@@ -30,7 +31,8 @@ async def load_model():
     """Load model once at startup"""
     global model, processor, all_prefilled_outputs
     
-    model_id = "microsoft/VibeVoice-Realtime-0.5B"
+    # model_id = "microsoft/VibeVoice-Realtime-0.5B"
+    model_id = model_path
     voice_sample = f"{voice_path}/en-Emma_woman.pt"
     
     print("Loading VibeVoice model...")
