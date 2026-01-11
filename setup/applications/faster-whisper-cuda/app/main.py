@@ -35,6 +35,7 @@ app.add_middleware(
 )
 
 # Global model instance
+model_path = os.environ.get('MODEL_PATH', '/opt/app/model/distil-large-v3')
 model: Optional[WhisperModel] = None
 
 # Configuration
@@ -57,7 +58,7 @@ async def startup_event():
     logger.info(f"Loading Whisper model: {config.model_size} on {config.device}")
     try:
         model = WhisperModel(
-            config.model_size,
+            model_path,
             device=config.device,
             compute_type=config.compute_type
         )
