@@ -14,8 +14,7 @@ RUN . /opt/venv/bin/activate && uv pip install -e .
 COPY /app /opt/app
 WORKDIR /opt/app/model
 RUN . /opt/venv/bin/activate && python -c \
-    'from huggingface_hub import snapshot_download' \
-    'snapshot_download("microsoft/VibeVoice-Realtime-0.5B", local_dir="VibeVoice-Realtime-0.5B")'
+    'from huggingface_hub import snapshot_download; snapshot_download("microsoft/VibeVoice-Realtime-0.5B", local_dir="VibeVoice-Realtime-0.5B")'
 WORKDIR /opt/app
 ENV VOICE_PATH="/opt/VibeVoice/demo/voices/streaming_model"
 CMD . /opt/venv/bin/activate && uvicorn main:app --host 0.0.0.0 --port 8000
