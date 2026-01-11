@@ -10,6 +10,10 @@ import numpy as np
 import soundfile as sf
 import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # processor
 from vibevoice.processor.vibevoice_streaming_processor import VibeVoiceStreamingProcessor
 # model loader for inference
