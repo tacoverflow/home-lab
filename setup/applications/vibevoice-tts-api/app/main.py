@@ -8,6 +8,7 @@ import os
 import wave
 import numpy as np
 import soundfile as sf
+import logging
 
 # processor
 from vibevoice.processor.vibevoice_streaming_processor import VibeVoiceStreamingProcessor
