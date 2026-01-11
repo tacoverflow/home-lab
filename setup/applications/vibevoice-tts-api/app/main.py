@@ -7,6 +7,7 @@ import io
 import os
 import wave
 import numpy as np
+import soundfile as sf
 
 # processor
 from vibevoice.processor.vibevoice_streaming_processor import VibeVoiceStreamingProcessor
@@ -76,24 +77,14 @@ def generate_audio(text: str) -> bytes:
     # Convert tensor to numpy array
     audio_array = outputs.speech_outputs[0].cpu().numpy()
     
-    # Get sample rate from processor (usually 24000)
+    # Get sample rate
     sample_rate = processor.feature_extractor.sampling_rate
     
-    # VibeVoice outputs float32 in range [-1, 1], normalize and convert to int16
-    audio_array = np.clip(audio_array, -1.0, 1.0)
-    audio_array = (audio_array * 32767).astype(np.int16)
-    
-    # Create WAV file in memory
+    # Write to BytesIO using soundfile (same as your original code)
     wav_buffer = io.BytesIO()
-    
-    # Write WAV file using wave module
-    with wave.open(wav_buffer, 'wb') as wav_file:
-        wav_file.setnchannels(1)  # Mono
-        wav_file.setsampwidth(2)  # 2 bytes per sample (int16)
-        wav_file.setframerate(sample_rate)
-        wav_file.writeframes(audio_array.tobytes())
-    
+    sf.write(wav_buffer, audio_array, sample_rate, format='WAV')
     wav_buffer.seek(0)
+    
     return wav_buffer.read()
 
 @app.post("/tts")
