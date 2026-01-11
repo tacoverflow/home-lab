@@ -1,0 +1,8 @@
+FROM nvidia/cuda:12.8.0-devel-ubuntu24.04
+RUN apt update
+RUN apt install -y curl git
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
+RUN uv python install 3.12
+RUN uv venv /opt/venv/ --seed
+RUN . /opt/venv/bin/activate && uv pip install torch transformers soundfile accelerate peft diffusers fastapi pydantic uvicorn
