@@ -87,10 +87,17 @@ def generate_audio(text: str) -> bytes:
         logger.info(f"Output type: {type(outputs)}")
         logger.info(f"Output attributes: {dir(outputs)}")
         
-        # Convert tensor to numpy array
-        audio_array = outputs.speech_outputs[0].cpu().numpy()
-        logger.info(f"Audio array shape: {audio_array.shape}, dtype: {audio_array.dtype}")
+        # Convert tensor to numpy array - need to convert bfloat16 to float32 first
+        audio_tensor = outputs.speech_outputs[0]
+        logger.info(f"Audio tensor dtype: {audio_tensor.dtype}")
         
+        # Convert bfloat16 to float32 before numpy conversion
+        if audio_tensor.dtype == torch.bfloat16:
+            audio_tensor = audio_tensor.to(torch.float32)
+        
+        audio_array = audio_tensor.cpu().numpy()
+        logger.info(f"Audio array shape: {audio_array.shape}, dtype: {audio_array.dtype}")
+
         # Get sample rate from processor (usually 24000)
         sample_rate = processor.feature_extractor.sampling_rate
         logger.info(f"Sample rate: {sample_rate}")
