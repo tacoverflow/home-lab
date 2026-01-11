@@ -92,6 +92,7 @@ def generate_audio(text: str) -> bytes:
             generation_config={'do_sample': False},
             verbose=False,
             all_prefilled_outputs=copy.deepcopy(all_prefilled_outputs) if all_prefilled_outputs is not None else None,
+            attn_implementation='flash_attention_2'
         )
 
         logger.info(f"Output type: {type(outputs)}")
