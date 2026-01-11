@@ -99,7 +99,7 @@ def generate_audio(text: str) -> bytes:
         logger.info(f"Audio array shape: {audio_array.shape}, dtype: {audio_array.dtype}")
 
         # Get sample rate from processor (usually 24000)
-        sample_rate = processor.feature_extractor.sampling_rate
+        sample_rate = processor.audio_processor.sampling_rate
         logger.info(f"Sample rate: {sample_rate}")
         
         # VibeVoice outputs float32 in range [-1, 1], normalize and convert to int16
