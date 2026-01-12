@@ -8,7 +8,7 @@ RUN uv venv /opt/venv/ --seed
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install torch faster-whisper uvicorn fastapi python-multipart pydantic
+    uv pip install faster-whisper uvicorn fastapi python-multipart pydantic
 COPY ./app /opt/app
 WORKDIR /opt/app/model
 RUN --mount=type=cache,target=/root/.cache/huggingface . /opt/venv/bin/activate && python -c \
