@@ -58,9 +58,11 @@ async def startup_event():
     logger.info(f"Loading Whisper model: {config.model_size} on {config.device}")
     try:
         model = WhisperModel(
+            # config.model_size,
             model_path,
             device=config.device,
-            compute_type=config.compute_type
+            compute_type=config.compute_type,
+            # local_files_only=True
         )
         logger.info("Model loaded successfully")
     except Exception as e:
