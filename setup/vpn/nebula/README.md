@@ -25,9 +25,12 @@ sudo mv ./nebula ./nebula-cert /usr/local/bin/
 # Create the network cetificates
 - Create CA the certs
 ```
+mkdir ca
+cd ca
 nebula-cert ca -name "MyHybridCluster"
 ls
 # ca.crt ca.key
+cd ..
 ```
 - Create the Lighthouse certs (the public relay)
 ```
