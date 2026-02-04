@@ -39,11 +39,21 @@ nebula-cert sign -name "lighthouse" -ip "10.0.0.1/24"
 
 - Create the Home Master certs
 ```
-nebula-cert sign -name "home-master" -ip "10.0.0.2/24" -groups "k8s-control"
+mkdir home
+cd home
+nebula-cert sign -name "host" -ip "10.0.0.2/24" -groups "k8s-control"
+ls
+# host.crt host.key
+cd ..
 ```
 - Create the AWS Worker
 ```
-nebula-cert sign -name "aws-worker" -ip "10.0.0.X/24" -groups "k8s-worker"
+mkdir -p nodes/10.0.0.3
+cd nodes/10.0.0.3
+nebula-cert sign -name "host" -ip "10.0.0.3/24" -groups "k8s-worker"
+ls
+# host.crt host.key
+cd ../..
 ```
 
 ## To create the certs for all the aws nodes
