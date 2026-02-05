@@ -56,6 +56,9 @@ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --node-name master --control-
 # Deploy Flannel CNI
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
+# Set the network interface to nebula1 for flannel
+kubectl patch ds kube-flannel-ds -n kube-flannel --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--iface=nebula1"}]'
+
 # Hotfix for wrong/missing cni path
 sudo ln -s /opt/cni/bin /usr/lib/cni
 sudo systemctl restart containerd.service
