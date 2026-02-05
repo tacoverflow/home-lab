@@ -7,6 +7,7 @@ generators:
   - registry-tls-secret.yaml
 
 resources:
+- namespace.yaml
 - pv.yaml
 - pvc.yaml
 - deployment.yaml
