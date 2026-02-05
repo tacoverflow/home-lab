@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-janitor
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: node-janitor
+  template:
+    metadata:
+      labels:
+        app: node-janitor
+    spec:
+      serviceAccountName: node-cleaner
+      # Essential: Use host network so the host-level bash script can reach it
+      hostNetwork: true 
+      # Target only your AWS workers
+      nodeSelector:
+        group: k8s-worker
+      # Tolerations are vital for Spot instances. 
+      # If the node gets tainted during the 2-minute warning, the Janitor must stay alive.
+      tolerations:
+      - operator: "Exists"
+        effect: "NoSchedule"
+      - operator: "Exists"
+        effect: "NoExecute"
+      containers:
+      - name: janitor
+        image: image-registry.swag-code.com/node-janitor:0.0.1
+        env:
+        - name: KUBERNETES_SERVICE_HOST
+          value: "10.0.0.2" # The Nebula IP of your Master
+        - name: KUBERNETES_SERVICE_PORT
+          value: "6443"
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
