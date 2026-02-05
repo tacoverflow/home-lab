@@ -16,4 +16,4 @@ wget -nc $URL
 tar -xvf nebula-*.tar.gz
 sudo mv ./nebula ./nebula-cert /usr/local/bin/
 sudo mkdir -p /etc/nebula
-curl -o /etc/systemd/system/nebula.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/vpn/nebula/systemd/nebula.service
+sudo curl -o /etc/systemd/system/nebula.service https://raw.githubusercontent.com/tacoverflow/home-lab/refs/heads/main/setup/vpn/nebula/systemd/nebula.service
