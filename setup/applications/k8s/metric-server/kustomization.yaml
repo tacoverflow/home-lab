@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+patches:
+  - target:
+      kind: Deployment
+      name: metrics-server
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/hostNetwork
+        value: true
+      - op: add
+        path: /spec/template/spec/containers/0/env
+        value:
+          - name: KUBERNETES_SERVICE_HOST
+            value: "10.0.0.2"
+          - name: KUBERNETES_SERVICE_PORT
+            value: "6443"
+      - op: replace
+        path: /spec/template/spec/containers/0/args
+        value:
+          - --cert-dir=/tmp
+          - --secure-port=4443
+          - --kubelet-insecure-tls
+          - --kubelet-preferred-address-types=InternalIP
+      - op: replace
+        path: /spec/template/spec/containers/0/ports/0/containerPort
+        value: 4443
+      - op: replace
+        path: /spec/template/spec/containers/0/livenessProbe/httpGet/port
+        value: 4443
+      - op: replace
+        path: /spec/template/spec/containers/0/readinessProbe/httpGet/port
+        value: 4443
+
+  - target:
+      kind: Service
+      name: metrics-server
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/targetPort
+        value: 4443
