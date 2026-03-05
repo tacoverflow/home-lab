@@ -1,0 +1,21 @@
+resources:
+  - base.yaml
+
+patches:
+  - target:
+      kind: DaemonSet
+      name: gpu-operator-node-feature-discovery-worker
+      namespace: gpu-operator
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: KUBERNETES_SERVICE_HOST
+          value: "10.0.0.2"
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: KUBERNETES_SERVICE_PORT
+          value: "6443"
+
+namespace: gpu-operator
