@@ -1,0 +1,89 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+secretGenerator:
+  - name: aws-creds
+    namespace: kube-system
+    envs:
+      - .env.secret
+
+resources:
+  - https://raw.githubusercontent.com/kubernetes/autoscaler/refs/heads/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
+
+patches:
+  - target:
+      kind: Deployment
+      name: cluster-autoscaler
+    patch: |-
+      # 1. Update the command arguments for Auto-Discovery
+      - op: replace
+        path: /spec/template/spec/containers/0/command
+        value:
+          - ./cluster-autoscaler
+          - --v=4
+          - --stderrthreshold=info
+          - --cloud-provider=aws
+          - --skip-nodes-with-local-storage=false
+          - --expander=least-waste
+          - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/hybrid-lab
+          - --balance-similar-node-groups
+          - --skip-nodes-with-system-pods=false
+
+      # 2. Inject AWS Region and Credentials
+      - op: add
+        path: /spec/template/spec/containers/0/env
+        value:
+          - name: AWS_REGION
+            value: "us-east-1"
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: aws-creds
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws-creds
+                key: AWS_SECRET_ACCESS_KEY 
+      # 3. Update the HostPath to point to the correct Ubuntu certificate file
+      - op: replace
+        path: /spec/template/spec/volumes/0/hostPath/path
+        value: "/etc/ssl/certs/ca-certificates.crt"
+
+      # 4. Update the MountPath inside the container to match where the app expects it
+      # Note: The binary inside usually looks in /etc/ssl/certs/ca-certificates.crt
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts/0/mountPath
+        value: "/etc/ssl/certs/ca-certificates.crt"
+
+      # 5. Force the HostPath type to 'File' to prevent Kubelet from creating a directory
+      - op: add
+        path: /spec/template/spec/volumes/0/hostPath/type
+        value: "File"
+      # 6. allow cluster autoscaler to run outside aws network
+      - op: add
+        path: /spec/template/spec/containers/0/command/-
+        value: "--ignore-daemonsets-utilization=true"
+      - op: add
+        path: /spec/template/spec/containers/0/command/-
+        value: "--aws-use-static-instance-list=false"
+      - op: add
+        path: /spec/template/spec/containers/0/command/-
+        value: "--force-delete-unregistered-nodes=true"
+      - op: add
+        path: /spec/template/spec/containers/0/command/-
+        value: "--ok-total-unready-count=10"
+      # 7. Force to run on the control-plane
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          node-role.kubernetes.io/control-plane: ""
+      - op: add
+        path: /spec/template/spec/tolerations
+        value:
+          - key: "node-role.kubernetes.io/control-plane"
+            operator: "Exists"
+            effect: "NoSchedule"
+          - key: "node-role.kubernetes.io/master"
+            operator: "Exists"
+            effect: "NoSchedule"
