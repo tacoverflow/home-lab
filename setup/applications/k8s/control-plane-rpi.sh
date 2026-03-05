@@ -51,7 +51,9 @@ sudo systemctl enable containerd
 sudo systemctl restart containerd
 
 # Start control-plane with kubeadm
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --node-name master --control-plane-endpoint 10.0.0.2 --apiserver-cert-extra-sans="45.76.174.46,10.0.0.2"
+# --apiserver-advertise-address this option will make the kubernetes enpoint to use the nebula ip
+# --apiserver-cert-extra-sans will allow ssl verification
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --node-name master --control-plane-endpoint 10.0.0.2 --apiserver-advertise-address=10.0.0.2 --apiserver-cert-extra-sans="45.76.174.46,10.0.0.2"
 
 # Deploy Flannel CNI
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
