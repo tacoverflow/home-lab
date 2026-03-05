@@ -5,7 +5,6 @@ import (
     "fmt"
     "log"
     "net/http"
-    "os"
 
     metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
     "k8s.io/client-go/kubernetes"
@@ -14,8 +13,11 @@ import (
 
 func main() {
     http.HandleFunc("/self-destruct", func(w http.ResponseWriter, r *http.Request) {
-        nodeName := os.Getenv("NODE_NAME")
-        
+        nodeName := r.URL.Query().Get("node")
+        if nodeName == "" {
+	    http.Error(w, "Missing 'node' query parameter", http.StatusBadRequest)
+	    return
+	} 
         // 1. Create the in-cluster config
         config, _ := rest.InClusterConfig()
         clientset, _ := kubernetes.NewForConfig(config)

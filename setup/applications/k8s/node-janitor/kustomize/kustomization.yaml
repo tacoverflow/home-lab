@@ -1,3 +1,4 @@
 resources:
 - rbac.yaml
-- deamonset.yaml
+- deployment.yaml
+- service.yaml
